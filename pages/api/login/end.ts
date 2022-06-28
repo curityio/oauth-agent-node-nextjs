@@ -2,7 +2,11 @@ import {NextApiRequest} from "next";
 import urlparse from 'url-parse'
 import {
     decryptCookie,
-    generateRandomString, getATCookieName, getCookiesForTokenResponse, getCSRFCookieName,
+    generateRandomString,
+    getATCookieName,
+    getCookiesForFailedLoginResponse,
+    getCookiesForTokenResponse,
+    getCSRFCookieName,
     getTempLoginDataCookieName,
     getTokenEndpointResponse,
     ValidateRequestOptions
@@ -13,6 +17,7 @@ import loggingMiddleware from "../../../src/supportability/loggingMiddleware";
 import runMiddleware from "../../../src/supportability/runMiddleware";
 import handleException from "../../../src/supportability/handleException";
 import {OauthAgentResponse} from "../../../src/OauthAgentResponse";
+import {AuthorizationResponseException} from "../../../src/lib/exceptions";
 
 /*
      * The SPA posts its URL here on every page load, and this operation ends a login when required
@@ -32,14 +37,25 @@ export default async (req: NextApiRequest, res: OauthAgentResponse) => {
         options.requireCsrfHeader = false
         validateNextRequest(req, options)
 
-        // Early logic to check for an OAuth response
+        // First see if the SPA is reporting an OAuth front channel response to the browser
         const data = getUrlParts(req.body?.pageUrl)
-        const isOAuthResponse = !!(data.state && data.code)
+        const isSuccessOAuthResponse = !!(data.state && data.code)
+        const isFailedOAuthResponse = !!(data.state && data.error)
+
+        // First handle reporting front channel errors back to the SPA
+        if (isFailedOAuthResponse) {
+
+            res.setHeader('Set-Cookie', getCookiesForFailedLoginResponse(config))
+            const error = new AuthorizationResponseException(
+                data.error,
+                data.error_description || 'Login failed at the Authorization Server')
+            return handleException(error, req, res)
+        }
 
         let isLoggedIn: boolean
         let csrfToken: string = ''
 
-        if (isOAuthResponse) {
+        if (isSuccessOAuthResponse) {
 
             // Main OAuth response handling
             const tempLoginData = req.cookies ? req.cookies[getTempLoginDataCookieName(config.cookieNamePrefix)] : undefined
@@ -85,7 +101,7 @@ export default async (req: NextApiRequest, res: OauthAgentResponse) => {
         // isLoggedIn enables the SPA to know it does not need to present a login option
         // handled enables the SPA to know a login has just completed
         const responseBody = {
-            handled: isOAuthResponse,
+            handled: isSuccessOAuthResponse,
             isLoggedIn,
         } as any
 
