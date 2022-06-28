@@ -16,13 +16,21 @@
 
 import OAuthAgentException from './OAuthAgentException'
 
-export default class UnauthorizedException extends OAuthAgentException {
-    public statusCode = 401
-    public code = 'unauthorized_request'
-    public cause?: Error
+// Thrown when the OpenId Connect response returns a URL like this:
+// https://www.example.com?state=state=nu2febouwefbjfewbj&error=invalid_scope&error_description=
+export default class AuthorizationResponseException extends OAuthAgentException {
+    public statusCode = 400
+    public code: string
 
-    constructor(cause?: Error) {
-        super("Access denied due to invalid request details")
-        this.cause = cause
+    constructor(error: string, description: string) {
+        super(description)
+
+        // Return the error code to the browser, eg invalid_scope
+        this.code = error
+
+        // Treat the prompt=none response as expiry related
+        if (this.code === 'login_required') {
+            this.statusCode = 401
+        }
     }
 }

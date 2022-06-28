@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-import fetch from 'node-fetch'
+import fetch, {RequestInit} from 'node-fetch'
 import {assert, expect} from "chai";
 
 import { config } from '../../src/config'
-import {performLogin} from './testUtils'
+import {fetchStubbedResponse, performLogin, startLogin} from './testUtils'
 
 // Tests to focus on the login endpoint
 describe('LoginControllerTests', () => {
@@ -178,5 +178,103 @@ describe('LoginControllerTests', () => {
         assert.equal(body.isLoggedIn, true, 'Incorrect isLoggedIn value')
         assert.equal(body.handled, false, 'Incorrect handled value')
         expect(body.csrf, 'Missing csrfToken value').length.above(0)
+    })
+
+    it('When the Authorization Server returns a configuration-related 400 response, the OAuth Agent should respond with 400', async () => {
+
+        const [state, cookieString] = await startLogin()
+        const code = '4a4246d6-b4bd-11ec-b909-0242ac120002'
+
+        const payload = {
+            pageUrl: `http://www.example.com?code=${code}&state=${state}`,
+        }
+        const options = {
+            method: 'POST',
+            headers: {
+                origin: config.trustedWebOrigins[0],
+                'Content-Type': 'application/json',
+                cookie: cookieString,
+            },
+            body: JSON.stringify(payload) as string,
+        } as RequestInit
+
+        const stubbedResponse = {
+            id: '1527eaa0-6af2-45c2-a2b2-e433eaf7cf04',
+            priority: 1,
+            request: {
+                method: 'POST',
+                url: '/oauth/v2/oauth-token'
+            },
+            response: {
+
+                // Simulate the response for an incorrect client secret to complete the OIDC flow
+                status: 400,
+                body: "{\"error\":\"invalid_client\"}"
+            }
+        }
+
+        const response = await fetchStubbedResponse(stubbedResponse, async () => {
+            return await fetch(`${oauthAgentBaseUrl}/login/end`, options)
+        })
+
+        assert.equal(response.status, 400, 'Incorrect HTTP status')
+        const body = await response.json()
+        assert.equal(body.code, 'authorization_error', 'Incorrect error code')
+    })
+
+    it('When the Authorization Server returns an OAuth error response to the front channel, the OAuth Agent should return 400 from login/end', async () => {
+
+        const [state, cookieString] = await startLogin()
+
+        const payload = {
+            pageUrl: `http://www.example.com?error=invalid_scope&state=${state}`,
+        }
+        const options = {
+            method: 'POST',
+            headers: {
+                origin: config.trustedWebOrigins[0],
+                'Content-Type': 'application/json',
+                cookie: cookieString,
+            },
+            body: JSON.stringify(payload),
+        } as RequestInit
+
+        const response = await fetch(`${oauthAgentBaseUrl}/login/end`, options)
+
+        assert.equal(response.status, 400, 'Incorrect HTTP status')
+        const body = await response.json()
+        assert.equal(body.code, 'invalid_scope', 'Incorrect error code')
+    })
+
+    it('When the Authorization Server returns an expiry-related error response to the front channel, the OAuth Agent should return 401 from login/end', async () => {
+
+        const clientOptions = {
+            extraParams: [
+                {
+                    key: 'prompt',
+                    value: 'none',
+                }
+            ]
+        }
+        const [state, cookieString] = await startLogin(clientOptions)
+
+        const payload = {
+            pageUrl: `http://www.example.com?error=login_required&state=${state}`,
+        }
+        const options = {
+            method: 'POST',
+            headers: {
+                origin: config.trustedWebOrigins[0],
+                'Content-Type': 'application/json',
+                cookie: cookieString,
+            },
+            body: JSON.stringify(payload),
+        } as RequestInit
+
+        const response = await fetch(`${oauthAgentBaseUrl}/login/end`, options)
+
+        assert.equal(response.status, 401, 'Incorrect HTTP status')
+        const body = await response.json()
+        assert.equal(body.code, 'login_required', 'Incorrect error code')
     })
 })
