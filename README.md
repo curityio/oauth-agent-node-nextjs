@@ -1,34 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# A Next.js OAuth Agent for SPAs
 
-## Getting Started
+[![Quality](https://img.shields.io/badge/quality-test-yellow)](https://curity.io/resources/code-examples/status/)
+[![Availability](https://img.shields.io/badge/availability-source-blue)](https://curity.io/resources/code-examples/status/)
 
-First, run the development server:
+## Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+The OAuth Agent acts as a modern `Back End for Front End (BFF)` for Single Page Applications.\
+This implementation demonstrates the standard pattern for SPAs:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Strongest browser security with only `SameSite=strict` cookies
+- The OpenID Connect flow uses Authorization Code Flow (PKCE) and a client secret
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+![Logical Components](/doc/logical-components.png)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Architecture
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+The following endpoints are used so that the SPA uses simple one-liners to perform its OAuth work:
 
-## Learn More
+| Endpoint          | Description                                                                          |
+|-------------------|--------------------------------------------------------------------------------------|
+| POST /login/start | Start a login by providing the request URL to the SPA and setting temporary cookies. |
+| POST /login/end   | Complete a login and issuing secure cookies for the SPA containing encrypted tokens. |
+| GET /userInfo     | Return information from the User Info endpoint for the SPA to display.               |
+| GET /claims       | Return ID token claims such as `auth_time` and `acr`.                                |
+| POST /refresh     | Refresh an access token and rewrite cookies.                                         |
+| POST /logout      | Clear cookies and return an end session request URL.                                 |
 
-To learn more about Next.js, take a look at the following resources:
+For further details see the [Architecture](/doc/Architecture.md) article.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## OAuth Agent Development
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+See the [Setup](/doc/Setup.md) article for details on productive OAuth Agent development.\
+This enables a test driven approach to developing the OAuth Agent, without the need for a browser.
 
-## Deploy on Vercel
+## End-to-End SPA Flow
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+See the below article for details on how to run the end-to-end solution in a browser:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [SPA Code Example](https://curity.io/resources/learn/token-handler-spa-example/)
+
+The end-to-end solution, by default, uses our Express implementation of the OAuth Agent. If you want to run it with this Next.js implementation,
+then a few things would have to be changed manually in the build and deployment scripts.
+
+## Website Documentation
+
+See the [Curity OAuth for Web Home Page](https://curity.io/product/token-service/oauth-for-web/) for all resources on this design pattern.
+
+## More Information
+
+Please visit [curity.io](https://curity.io/) for more information about the Curity Identity Server.
