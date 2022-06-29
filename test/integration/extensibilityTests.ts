@@ -21,7 +21,7 @@ import {config} from '../../src/config'
 // Tests to focus on extra details the SPA may need to supply at runtime
 describe('ExtensibilityTests', () => {
 
-    const oauthAgentBaseUrl = `http://localhost:${config.port}${config.endpointsPrefix}`
+    const oauthAgentBaseUrl = `http://localhost:${config.port}/api`
 
     it('Starting a login request with a simple OpenID Connect parameter should include it in the request URL', async () => {
 

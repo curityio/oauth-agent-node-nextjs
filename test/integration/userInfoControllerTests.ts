@@ -22,7 +22,7 @@ import {fetchStubbedResponse, performLogin} from './testUtils'
 // Tests to focus on returning user information to the SPA via the user info endpoint
 describe('UserInfoControllerTests', () => {
 
-    const oauthAgentBaseUrl = `http://localhost:${config.port}${config.endpointsPrefix}`
+    const oauthAgentBaseUrl = `http://localhost:${config.port}/api`
 
     it('Requesting user info from an untrusted origin should return a 401 response', async () => {
 

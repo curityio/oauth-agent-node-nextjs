@@ -20,7 +20,7 @@ import urlParse from 'url-parse';
 import {config} from '../../src/config';
 import {ClientOptions} from "../../src/lib";
 
-const oauthAgentBaseUrl = `http://localhost:${config.port}${config.endpointsPrefix}`
+const oauthAgentBaseUrl = `http://localhost:${config.port}/api`
 const wiremockAdminBaseUrl = `http://localhost:8443/__admin/mappings`
 
 /*
