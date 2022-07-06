@@ -27,7 +27,7 @@ The API responds with a JSON containing the `authorizationRequestUrl` field.
 
 #### Example request
 
-`POST https://api.example.com/oauth-agent/login/start`
+`POST https://api.example.com/api/login/start`
 
 Response:
 ```json
@@ -61,7 +61,7 @@ This endpoint should be called by the SPA on any page load. The SPA sends the cu
 #### Example request
 
 ```http
-POST https://api.example.com/oauth-agent/login/end
+POST https://api.example.com/api/login/end
 pageUrl=http://www.example.com?code=abcdef&state=qwerty
 ```
 
@@ -74,7 +74,7 @@ Endpoint which sends the access token to the user info endpoint, then returns da
 #### Example
 
 ```http
-GET https://api.example.com/oauth-agent/userInfo
+GET https://api.example.com/api/userInfo
 Cookie: example-at=2558e7806c0523fd96d105...
 ```
 
@@ -97,7 +97,7 @@ Endpoint which returns claims of the ID token contained in the session cookie.
 #### Example
 
 ```http
-GET https://api.example.com/oauth-agent/claims
+GET https://api.example.com/api/claims
 Cookie: example-id=2558e7806c0523fd96d105...
 ```
 

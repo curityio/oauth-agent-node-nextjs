@@ -15,13 +15,13 @@ Run these commands from the root folder and the API will then listen on HTTP ove
 
 ```bash
 npm install
-npm dev
+npm run dev
 ```
 
 Test that the API is contactable by running this command from the root folder:
 
 ```bash
-curl -X POST http://api.example.local:3000/api/login/start \
+curl -X POST http://localhost:3000/api/login/start \
 -H "origin: http://www.example.local" | jq
 ```
 
