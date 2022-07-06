@@ -33,3 +33,19 @@ Run some tests that require only a running OAuth Agent, with a mocked Identity S
 npm run wiremock
 npm test
 ```
+
+## Running Docker
+
+There is a Docker file that you can use to build and run the OAuth Agent without having to install any tools on your local machine — you only need Docker Desktop.
+
+First, run this command from the root directory to build the Docker image:
+
+```shell
+docker build -t oauth-agent .
+```
+
+Then run the image with:
+
+```shell
+docker run -p 3000:3000 --rm oauth-agent
+```

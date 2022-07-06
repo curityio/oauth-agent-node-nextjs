@@ -68,8 +68,9 @@ See the below article for details on how to run the end-to-end solution in a bro
 
 - [SPA Code Example](https://curity.io/resources/learn/token-handler-spa-example/)
 
-The end-to-end solution, by default, uses our [Express implementation of the OAuth Agent](https://github.com/curityio/oauth-agent-node-express). If you want to run it with this Next.js implementation,
-then a few things would have to be changed manually in the build and deployment scripts.
+The end-to-end solution, by default, uses our [Express implementation of the OAuth Agent](https://github.com/curityio/oauth-agent-node-express).
+If you want to run it with this Next.js implementation, then a few things would have to be changed manually in the build
+and deployment scripts. In this repository, you will find a `Dockerfile` that can be used with the scripts provided in the End-to-End example.
 
 ## Website Documentation
 
