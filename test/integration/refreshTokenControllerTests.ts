@@ -22,7 +22,7 @@ import {fetchStubbedResponse, getCookieString, performLogin} from './testUtils'
 // Tests to focus on token refresh when access tokens expire
 describe('RefreshTokenControllerTests', () => {
 
-    const oauthAgentBaseUrl = `http://localhost:${config.port}${config.endpointsPrefix}`
+    const oauthAgentBaseUrl = `http://localhost:${config.port}/api`
 
     it('Sending POST request to refresh endpoint from untrusted origin should return a 401 response', async () => {
 

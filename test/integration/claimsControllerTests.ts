@@ -22,7 +22,7 @@ import {performLogin} from './testUtils'
 // Tests to focus on returning ID token details
 describe('ClaimsControllerTests', () => {
 
-    const oauthAgentBaseUrl = `http://localhost:${config.port}${config.endpointsPrefix}`
+    const oauthAgentBaseUrl = `http://localhost:${config.port}/api`
 
     it('Requesting claims from an untrusted origin should return a 401 response', async () => {
 

@@ -22,7 +22,7 @@ import {performLogin} from './testUtils'
 // Tests to focus on the logout endpoint
 describe('LogoutControllerTests', () => {
 
-    const oauthAgentBaseUrl = `http://localhost:${config.port}${config.endpointsPrefix}`
+    const oauthAgentBaseUrl = `http://localhost:${config.port}/api`
 
     it('Posting to logout from a malicious origin should return a 401 response', async () => {
 

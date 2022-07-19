@@ -23,7 +23,7 @@ import {fetchStubbedResponse, performLogin, startLogin} from './testUtils'
 // Tests to focus on the login endpoint
 describe('LoginControllerTests', () => {
 
-    const oauthAgentBaseUrl = `http://localhost:${config.port}${config.endpointsPrefix}`
+    const oauthAgentBaseUrl = `http://localhost:${config.port}/api`
 
     it('Sending an OPTIONS request with wrong Origin should return 204 response without CORS headers', async () => {
 
