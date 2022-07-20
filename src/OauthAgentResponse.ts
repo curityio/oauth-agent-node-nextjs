@@ -15,7 +15,7 @@
  */
 
 import {NextApiResponse} from "next";
-import {RequestLog} from "./supportability/requestLog";
+import {RequestLog} from "./middleware/requestLog";
 
 export type OauthAgentResponse = NextApiResponse & {
     logger: RequestLog

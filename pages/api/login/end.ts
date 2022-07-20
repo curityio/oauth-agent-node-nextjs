@@ -13,11 +13,11 @@ import {
 } from "../../../src/lib";
 import validateNextRequest from "../../../src/validateNextRequest";
 import {config} from "../../../src/config";
-import handleException from "../../../src/supportability/handleException";
+import handleException from "../../../src/middleware/handleException";
 import {OauthAgentResponse} from "../../../src/OauthAgentResponse";
 import {AuthorizationResponseException} from "../../../src/lib/exceptions";
 import MethodNotAllowedException from "../../../src/lib/exceptions/MethodNotAllowedException";
-import handleCatchingWithLoggingAndCors from "../../../src/supportability/handleCathingWithLoggingAndCors";
+import handleCatchingWithLoggingAndCors from "../../../src/middleware/handleCathingWithLoggingAndCors";
 
 /*
      * The SPA posts its URL here on every page load, and this operation ends a login when required
