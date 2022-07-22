@@ -4,9 +4,9 @@ import {getATCookieName, getCookiesForUnset, getLogoutURL, ValidateRequestOption
 import validateNextRequest from "../../src/validateNextRequest";
 import {config} from "../../src/config";
 import {InvalidCookieException} from "../../src/lib/exceptions";
-import handleException from "../../src/supportability/handleException";
+import handleException from "../../src/middleware/handleException";
 import MethodNotAllowedException from "../../src/lib/exceptions/MethodNotAllowedException";
-import handleCatchingWithLoggingAndCors from "../../src/supportability/handleCathingWithLoggingAndCors";
+import handleCatchingWithLoggingAndCors from "../../src/middleware/handleCathingWithLoggingAndCors";
 
 const handler = (req: NextApiRequest, res: OauthAgentResponse) => {
     if (req.method === 'POST') {

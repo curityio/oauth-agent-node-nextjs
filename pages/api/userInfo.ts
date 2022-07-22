@@ -1,12 +1,12 @@
 import {NextApiRequest} from "next";
 import {OauthAgentResponse} from "../../src/OauthAgentResponse";
-import handleException from "../../src/supportability/handleException";
+import handleException from "../../src/middleware/handleException";
 import {getATCookieName, getUserInfo, ValidateRequestOptions} from "../../src/lib";
 import validateNextRequest from "../../src/validateNextRequest";
 import {config} from "../../src/config";
 import {InvalidCookieException} from "../../src/lib/exceptions";
 import MethodNotAllowedException from "../../src/lib/exceptions/MethodNotAllowedException";
-import handleCatchingWithLoggingAndCors from "../../src/supportability/handleCathingWithLoggingAndCors";
+import handleCatchingWithLoggingAndCors from "../../src/middleware/handleCathingWithLoggingAndCors";
 
 const handler = async (req: NextApiRequest, res: OauthAgentResponse) => {
     if (req.method === 'GET') {

@@ -2,10 +2,10 @@ import type {NextApiRequest} from 'next'
 import {getAuthorizationURL, getTempLoginDataCookie, ValidateRequestOptions} from "../../../src/lib";
 import validateNextRequest from "../../../src/validateNextRequest";
 import {config} from "../../../src/config";
-import handleException from "../../../src/supportability/handleException";
+import handleException from "../../../src/middleware/handleException";
 import {OauthAgentResponse} from "../../../src/OauthAgentResponse";
 import MethodNotAllowedException from "../../../src/lib/exceptions/MethodNotAllowedException";
-import handleCatchingWithLoggingAndCors from "../../../src/supportability/handleCathingWithLoggingAndCors";
+import handleCatchingWithLoggingAndCors from "../../../src/middleware/handleCathingWithLoggingAndCors";
 
 const handler = (req: NextApiRequest, res: OauthAgentResponse) => {
     if (req.method === 'POST') {

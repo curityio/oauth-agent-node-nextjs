@@ -179,5 +179,9 @@ describe('RefreshTokenControllerTests', () => {
         assert.equal(response.status, 401, 'Incorrect HTTP status')
         const body = await response.json()
         assert.equal(body.code, 'session_expired', 'Incorrect error code')
+
+        // Clear cookies so that the next call to /login/end, eg a page reload, indicates not logged in
+        const clearedCookies = getCookieString(response);
+        assert.equal(clearedCookies, "example-auth=;example-at=;example-id=;example-csrf=;", 'Incorrect cleared cookies string')
     })
 })
