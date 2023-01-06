@@ -17,7 +17,10 @@ const cors = Cors(corsConfiguration)
 export default function handleCatchingWithLoggingAndCors(handler: (req: NextApiRequest, res: OauthAgentResponse) => unknown | Promise<unknown>) {
     return async (req: NextApiRequest, res: OauthAgentResponse) => {
         await runMiddleware(req, res, loggingMiddleware)
-        await runMiddleware(req, res, cors)
+        
+        if (config.corsEnabled) {
+            await runMiddleware(req, res, cors)
+        }
 
         try {
             await handler(req, res)
