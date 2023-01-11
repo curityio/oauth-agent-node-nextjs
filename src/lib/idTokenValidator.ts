@@ -9,7 +9,7 @@ import OAuthAgentConfiguration from './oauthAgentConfiguration';
  */
 export function validateIDtoken(config: OAuthAgentConfiguration, idToken: string) {
 
-    // For backwards compatibility, do nothing 
+    // For backwards compatibility, only validate the issuer when one is configured
     if (process.env.ISSUER) {
     
         const payload = jose.decodeJwt(idToken)
