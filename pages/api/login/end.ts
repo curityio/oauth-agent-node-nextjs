@@ -65,7 +65,9 @@ const handlePost = async (req: NextApiRequest, res: OauthAgentResponse) => {
         // Main OAuth response handling
         const tempLoginData = req.cookies ? req.cookies[getTempLoginDataCookieName(config.cookieNamePrefix)] : undefined
         const tokenResponse = await getTokenEndpointResponse(config, data.code, data.state, tempLoginData)
-        validateIDtoken(config, tokenResponse.id_token)
+        if (tokenResponse.id_token) {
+            validateIDtoken(config, tokenResponse.id_token)
+        }
 
         csrfToken = generateRandomString()
         const csrfCookie = req.cookies[getCSRFCookieName(config.cookieNamePrefix)]
