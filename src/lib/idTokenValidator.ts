@@ -9,15 +9,19 @@ import OAuthAgentConfiguration from './oauthAgentConfiguration';
  */
 export function validateIDtoken(config: OAuthAgentConfiguration, idToken: string) {
 
-    const payload = jose.decodeJwt(idToken)
+    // For backwards compatibility, do nothing 
+    if (process.env.ISSUER) {
     
-    if (payload.iss !== config.issuer) {
-        throw new InvalidIDTokenException(new Error('Unexpected iss claim'))
-    }
+        const payload = jose.decodeJwt(idToken)
+        
+        if (payload.iss !== config.issuer) {
+            throw new InvalidIDTokenException(new Error('Unexpected iss claim'))
+        }
 
-    const audience = getAudienceClaim(payload.aud)
-    if (audience.indexOf(config.clientID) === -1) {
-        throw new InvalidIDTokenException(new Error('Unexpected aud claim'))
+        const audience = getAudienceClaim(payload.aud)
+        if (audience.indexOf(config.clientID) === -1) {
+            throw new InvalidIDTokenException(new Error('Unexpected aud claim'))
+        }
     }
 }
 
