@@ -18,6 +18,7 @@ import { getAuthorizationURL } from './authorizationURL'
 import { getEncryptedCookie, decryptCookie } from './cookieEncrypter'
 import { getCookiesForTokenResponse, getCookiesForFailedLoginResponse, getCookiesForUnset } from './cookieBuilder'
 import { getTokenEndpointResponse, refreshAccessToken } from './getToken'
+import { validateIDtoken } from './idTokenValidator'
 import getUserInfo from './getUserInfo'
 import getIDTokenClaims from './getIDTokenClaims'
 import getRedirectUri from './redirectUri'
@@ -49,6 +50,7 @@ export {
     getIDCookieName,
     getAuthCookieName,
     generateRandomString,
+    validateIDtoken,
     OAuthAgentConfiguration,
     ValidateRequestOptions
 }

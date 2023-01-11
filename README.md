@@ -54,6 +54,8 @@ The following variables are used by the configuration of the OAuth Agent:
 | COOKIE_NAME_PREFIX       | The prefix of cookies set by the OAuth Agent.                                          | 'example'                                                          |
 | COOKIE_DOMAIN            | The domain for which cookies are issued. This should be the domain of the OAuth Agent. | 'api.example.local'                                                |
 | TRUSTED_WEB_ORIGIN       | The origin of the SPA. Requests from other Origins will be rejected.                   | 'http://www.example.local'                                         |
+| CORS_ENABLED             | True when the agent runs in a different subdomain of the web origin, false otherwise   | 'true'                                                             |
+| ISSUER                   | The issuer of the Authorization Server.                                                | 'http://login.example.local:8443/oauth/v2/oauth-anonymous'         |
 | AUTHORIZE_ENDPOINT       | The authorization endpoint of the Authorization Server.                                | 'http://login.example.local:8443/oauth/v2/oauth-authorize'         |
 | LOGOUT_ENDPOINT          | The logout endpoint of the Authorization Server.                                       | 'http://login.example.local:8443/oauth/v2/oauth-session/logout'    |
 | TOKEN_ENDPOINT           | The token endpoint of the Authorization Server.                                        | 'http://login.example.local:8443/oauth/v2/oauth-token'             |

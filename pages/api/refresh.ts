@@ -6,6 +6,7 @@ import {
     getAuthCookieName,
     getCookiesForTokenResponse,
     refreshAccessToken,
+    validateIDtoken,
     ValidateRequestOptions
 } from "../../src/lib";
 import validateNextRequest from "../../src/validateNextRequest";
@@ -33,6 +34,9 @@ const handlePost = async (req: NextApiRequest, res: OauthAgentResponse) => {
 
         const refreshToken = decryptCookie(config.encKey, req.cookies[authCookieName])
         const tokenResponse = await refreshAccessToken(refreshToken, config)
+        if (tokenResponse.id_token) {
+            validateIDtoken(config, tokenResponse.id_token)
+        }
 
         const cookiesToSet = getCookiesForTokenResponse(tokenResponse, config)
         res.setHeader('Set-Cookie', cookiesToSet)

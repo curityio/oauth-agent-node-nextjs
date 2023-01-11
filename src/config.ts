@@ -27,6 +27,8 @@ export const config: OAuthAgentConfiguration = {
     encKey: process.env.COOKIE_ENCRYPTION_KEY || '4e4636356d65563e4c73233847503e3b21436e6f7629724950526f4b5e2e4e50',
     cookieNamePrefix: process.env.COOKIE_NAME_PREFIX || 'example',
     endpointsPrefix: '/oauth-agent',
+    trustedWebOrigins: [process.env.TRUSTED_WEB_ORIGIN || 'http://www.example.local'],
+    corsEnabled: process.env.CORS_ENABLED ? process.env.CORS_ENABLED === 'true' : true,
     cookieOptions: {
         httpOnly: true,
         sameSite: true,
@@ -34,8 +36,8 @@ export const config: OAuthAgentConfiguration = {
         domain: process.env.COOKIE_DOMAIN || 'api.example.local',
         path: '/',
     } as CookieSerializeOptions,
-
-    trustedWebOrigins: [process.env.TRUSTED_WEB_ORIGIN || 'http://www.example.local'],
+    
+    issuer: process.env.ISSUER || 'http://login.example.local:8443/oauth/v2/oauth-anonymous',
     authorizeEndpoint: process.env.AUTHORIZE_ENDPOINT || 'http://login.example.local:8443/oauth/v2/oauth-authorize',
     logoutEndpoint: process.env.LOGOUT_ENDPOINT || 'http://login.example.local:8443/oauth/v2/oauth-session/logout',
     tokenEndpoint: process.env.TOKEN_ENDPOINT || 'http://login.example.local:8443/oauth/v2/oauth-token',

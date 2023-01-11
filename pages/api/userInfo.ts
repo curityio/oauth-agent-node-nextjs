@@ -18,8 +18,9 @@ const handler = async (req: NextApiRequest, res: OauthAgentResponse) => {
 }
 
 const handleGet = async (req: NextApiRequest, res: OauthAgentResponse) => {
-    // Verify the web origin
+
     const options = new ValidateRequestOptions()
+    options.requireTrustedOrigin = config.corsEnabled;
     options.requireCsrfHeader = false;
     validateNextRequest(req, options)
 
