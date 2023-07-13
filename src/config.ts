@@ -34,7 +34,7 @@ export const config: OAuthAgentConfiguration = {
         sameSite: true,
         secure: false,
         domain: process.env.COOKIE_DOMAIN || 'api.example.local',
-        path: '/',
+        path: process.env.COOKIE_BASE_PATH || '/',
     } as CookieSerializeOptions,
     
     issuer: process.env.ISSUER || 'http://login.example.local:8443/oauth/v2/oauth-anonymous',
