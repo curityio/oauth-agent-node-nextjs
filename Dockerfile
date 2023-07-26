@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:18-bullseye
 
 WORKDIR /usr/oauth-agent
 COPY src  /usr/oauth-agent/src
@@ -10,8 +10,8 @@ COPY package*.json       /usr/oauth-agent/
 RUN npm install
 RUN npm run build
 
-RUN addgroup -g 1001 apigroup
-RUN adduser -u 1001 -G apigroup -h /home/apiuser -D apiuser
+RUN groupadd --gid 10000 apiuser \
+  && useradd --uid 10001 --gid apiuser --shell /bin/bash --create-home apiuser
+USER 10001
 
-USER apiuser
 CMD ["npm", "start"]
